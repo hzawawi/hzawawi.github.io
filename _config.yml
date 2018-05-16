@@ -1,4 +1,4 @@
-title: Your awesome title
+title: Hussein Zawawi
 author: GitHub User
 email: your-email@domain.com
 description: > # this means to ignore newlines until "twitter_username:"
@@ -7,15 +7,14 @@ description: > # this means to ignore newlines until "twitter_username:"
   Google search results) and in your feed.xml site description.
 
 # social links
-twitter_username: jekyllrb
-github_username:  jekyll
-rss: rss
+twitter_username: @Hussein_Zawawi
+github_username:  hzawawi
+#rss: rss
 # dribbble_username: jekyll
 # facebook_username: jekyll
 # flickr_username: jekyll
 # instagram_username: jekyll
-# linkedin_username: jekyll
-# pinterest_username: jekyll
+linkedin_username: hussein zawawi
 # youtube_username: jekyll
 # googleplus_username: +jekyll
 
