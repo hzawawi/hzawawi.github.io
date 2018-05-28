@@ -1,7 +1,8 @@
-
+---
 layout: page
 title: DynamoDB with c# And.Net core.
 permalink: /dynamodb-post-1/
+---
 
 ### Objective
 When started working with dynamodb database, I found the online documentation and code sample online were quite limited and bit confusing. So I decided to start writing few blogs around the things I learned along the way so it will provide some helps for future developpers.
