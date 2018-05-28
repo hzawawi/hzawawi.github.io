@@ -17,7 +17,8 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
   localstack really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
 ### Code Sample
- 1. DynamoDb client setup
+ 1. ####DynamoDb client setup
+ 
 ```
 public class DynamoClient
 {
@@ -82,6 +83,7 @@ public class DynamoClient
 }
 ```
 2. #### Create table
+
 ```
 [DynamoDBTable("person")]
 public class Person: IEquatable<Person>
