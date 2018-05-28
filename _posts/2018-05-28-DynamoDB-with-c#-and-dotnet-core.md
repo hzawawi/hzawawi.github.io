@@ -1,4 +1,8 @@
 
+layout: page
+title: DynamoDB with c# And.Net core.
+permalink: /dynamodb-post-1/
+
 ### Objective
 When started working with dynamodb database, I found the online documentation and code sample online were quite limited and bit confusing. So I decided to start writing few blogs around the things I learned along the way so it will provide some helps for future developpers.
 
@@ -17,7 +21,7 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
   localstack really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
 ### Code Sample
- 1. ####DynamoDb client setup
+ 1. #### DynamoDb client setup
  
 ```
 public class DynamoClient
