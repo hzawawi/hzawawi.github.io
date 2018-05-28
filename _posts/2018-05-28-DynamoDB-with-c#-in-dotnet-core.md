@@ -18,9 +18,7 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
   
 ### Code Sample
  1. DynamoDb client setup
-<pre>
-  <code class="csharp">
-  
+```
 public class DynamoClient
 {
     private readonly AmazonDynamoDBClient _amazonDynamoDBClient;
@@ -82,12 +80,9 @@ public class DynamoClient
         return await _context.LoadAsync<Person>(id);
     }
 }
-  </code>
-</pre>
- 
+```
 2. #### Create table
-<pre>
-  <code class="csharp">
+```
 [DynamoDBTable("person")]
 public class Person: IEquatable<Person>
 {
@@ -116,14 +111,11 @@ public class Person: IEquatable<Person>
         }
     }
 }
-  </code>
-</pre>
+```
 
 3. #### tests
 
-<pre>
-  <code class="csharp">
-  
+```
 public class DynamoClientTests
 {
     private readonly DynamoClient _dynamoDbClient;
@@ -159,5 +151,4 @@ public class DynamoClientTests
         Assert.Equal(returnedPerson, person);
     }
 }
-  </code>
-</pre>
+```
