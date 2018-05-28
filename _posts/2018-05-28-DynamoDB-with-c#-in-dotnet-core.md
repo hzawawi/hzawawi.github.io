@@ -1,6 +1,4 @@
 
-## Dynamodb With C# In Dotnet Core 
-
 ### Objective
 When started working with dynamodb database, I found the online documentation and code sample online were quite limited and bit confusing. So I decided to start writing few blogs around the things I learned along the way so it will provide some helps for future developpers.
 
@@ -18,12 +16,9 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
   framework that helps mocking different aws cloud applications, in our example we are going to rely on it to mock amazon dynamodb database.
   localstack really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
-  
- ### Code Sample
+### Code Sample
  1. DynamoDb client setup
- 
-
- <pre>
+<pre>
   <code class="csharp">
   
 public class DynamoClient
@@ -88,9 +83,9 @@ public class DynamoClient
     }
 }
   </code>
- </pre>
+</pre>
  
- 2. #### Create table
+2. #### Create table
 <pre>
   <code class="csharp">
 [DynamoDBTable("person")]
@@ -124,9 +119,9 @@ public class Person: IEquatable<Person>
   </code>
 </pre>
 
-3. ### tests
+3. #### tests
 
- <pre>
+<pre>
   <code class="csharp">
   
 public class DynamoClientTests
