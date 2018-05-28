@@ -1,6 +1,6 @@
 ---
 layout: page
-title: DynamoDB with c# And.Net core.
+title: DynamoDB with c# and .Net Core.
 permalink: /dynamodb-post-1/
 ---
 
