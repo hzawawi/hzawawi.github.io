@@ -5,7 +5,7 @@ permalink: /dynamodb-post-1/
 ---
 
 ### Objective
-When started working with dynamodb database, I found the online documentation and code sample online were quite limited and bit confusing. So I decided to start writing few blogs around the things I learned along the way so it will provide some helps for future developpers.
+When started working with dynamodb database, I found the online documentation and online code samples were quite limited and bit confusing. So I decided to start writing few blogs around the things I learned along the way so it provides some helps for future developers.
 
 Goal of this first blog, is to give a simple example to quickly setup dynamodb client and be able to do some basic operations with the dynamoDb.
 Future blogs will be giving more deep guidelines about amazon dynamodb api and dynamodb core features.
@@ -17,76 +17,39 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
   .Net API to facilitate the interaction with aws dynamodb in order to execute different operations against the database
   such as (createTable, saveItem, retrieveItem,etc..)
 
-- #### LocalStack: 
+- #### [localstack](https://github.com/localstack/localstack): 
   framework that helps mocking different aws cloud applications, in our example we are going to rely on it to mock amazon dynamodb database.
   localstack really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
 ### Code Sample
  1. #### DynamoDb client setup
- 
-```
-public class DynamoClient
-{
-    private readonly AmazonDynamoDBClient _amazonDynamoDBClient;
-    private readonly DynamoDBContext _context;
+ ```
+ public class DynamoClient
+ {
+ 	private readonly AmazonDynamoDBClient _amazonDynamoDBClient;
+ 	private readonly DynamoDBContext _context;
 
-    public DynamoClient()
-    {
-        //localstack ignores secrets
-        _amazonDynamoDBClient = new AmazonDynamoDBClient("awsAccessKeyId", "awsSecretAccessKey", new AmazonDynamoDBConfig
-        {
-            ServiceURL = "http://localhost:4569", //default localstack url
-            UseHttp = true,
-        });
-        
-        _context = new DynamoDBContext(_amazonDynamoDBClient, new DynamoDBContextConfig
-        {
-            TableNamePrefix = "test_"
-        });
-    }
+ 	public DynamoClient()
+ 	{
+ 	    //localstack ignores secrets
+ 	    _amazonDynamoDBClient = new AmazonDynamoDBClient("awsAccessKeyId", "awsSecretAccessKey",
+ 	        new AmazonDynamoDBConfig
+ 	        {
+ 	            ServiceURL = "http://localhost:4569", //default localstack url
+ 	            UseHttp = true,
+ 	        });
 
-    public async Task<CreateTableResponse> SetupAsync()
-    {
-        var createTableRequest = new CreateTableRequest {
-            TableName = "test_person",
-            AttributeDefinitions = new List<AttributeDefinition>(),
-            KeySchema = new List<KeySchemaElement>(),
-            GlobalSecondaryIndexes = new List<GlobalSecondaryIndex>(),
-            LocalSecondaryIndexes = new List<LocalSecondaryIndex>(),
-            ProvisionedThroughput = new ProvisionedThroughput {
-                ReadCapacityUnits = 1,
-                WriteCapacityUnits = 1
-            }
-        };
-        createTableRequest.KeySchema.Add(new KeySchemaElement()
-        {
-            AttributeName = "Id",
-            KeyType = KeyType.HASH,
-        });
-        
-        createTableRequest.AttributeDefinitions = new List<AttributeDefinition>
-        {
-            new AttributeDefinition
-            {
-                AttributeName = "Id",
-                AttributeType = ScalarAttributeType.N,
-            }
-        };
-
-       return await _amazonDynamoDBClient.CreateTableAsync(createTableRequest);
-    }
-    
-    public async Task SavePerson(Person person)
-    {
-       await _context.SaveAsync(person);
-    }
-    
-    public async Task<Person> GetPerson(int id)
-    {
-        return await _context.LoadAsync<Person>(id);
-    }
+ 	    _context = new DynamoDBContext(_amazonDynamoDBClient, new DynamoDBContextConfig
+ 	    {
+ 	        TableNamePrefix = "test_"
+ 	    });
+ 	}
 }
 ```
+In order to create the client we need to pass to `AmazonDynamoDBClient` constructor the accessId and accessKey
+and sessionToken in case you have MFA enabled for your account. For the sake of simplicity we are pointing to localstack mock dynamo mock service.
+
+
 2. #### Create table
 
 ```
