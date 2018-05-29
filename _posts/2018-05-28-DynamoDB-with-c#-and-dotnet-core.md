@@ -17,12 +17,12 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
   .Net API to facilitate the interaction with aws dynamodb in order to execute different operations against the database
   such as (createTable, saveItem, retrieveItem,etc..)
 
-- #### [localstack](https://github.com/localstack/localstack): 
+- #### [Localstack](https://github.com/localstack/localstack): 
   framework that helps mocking different aws cloud applications, in our example we are going to rely on it to mock amazon dynamodb database.
   localstack really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
 ### Code Sample
- ***1.*** #### DynamoDb client setup
+#### 1. DynamoDb client setup
  ```
  public class DynamoClient
  {
@@ -51,7 +51,7 @@ In order to create the client we need to pass to **AmazonDynamoDBClient** constr
 and sessionToken in case you have MFA enabled for your account. For the sake of simplicity we are pointing to localstack mock dynamo mock service.
 
 
-2. #### Table and equivalent model class
+#### 2. Setup table and equivalent model class
 
 ```
 [DynamoDBTable("student")]
@@ -138,7 +138,7 @@ In this snippet, we are building the creation table request to construct the tab
 For the sake of simplicity we are just going to stick with the raw api calls in this blog.
 
 
-3. #### Save/Query from the table
+#### 3. Save/Query from the table
 
 ```
 public async Task SaveOrUpdateStudent(Student student)
@@ -169,10 +169,38 @@ public async Task<Student> ScanForStudentUsingFirstName(string firstName)
     return result.FirstOrDefault();
 }
 ```
-
 - SaveOrUpdateStudent: saving a new entity is quite straight forward, all you want to do is to call `SaveAsync`, bare in mind Save will create/update the record, so in case the record already exists the method invocation will just override the data on the matched record
 - GetStudentUsingHashKey: will retrieve the record back using our hashKey
 - ScanForStudentUsingFirstName: will scan the whole table looking for a matching firstName
 
+#### 4. Prevent overwriting existing records
+```
+public async Task SaveOnlyStudent(Student student)
+{
+    var identityEventTable = Table.LoadTable(_amazonDynamoDBClient, "test_student");
 
+    var expression = new Expression
+    {
+        ExpressionAttributeNames = new Dictionary<string, string>
+        {
+            {"#key", nameof(student.Id)},
+        },
+        ExpressionAttributeValues =
+        {
+            {":key", student.Id},
+        },
+        ExpressionStatement = "attribute_not_exists(#key) OR #key <> :key",
+    };
+
+    var document = _context.ToDocument(student);
+
+    await identityEventTable.PutItemAsync(document, new PutItemOperationConfig
+    {
+        ConditionalExpression = expression,
+        ReturnValues = ReturnValues.None
+    });
+}
+```
+In order to prevent overriding the details of existing records, we need to leverage conditional expressions in dynamoDb.
+So if we try to insert a record with a hashKey already presents in the table we will get *ConditionalCheckFailedException* being thrown
 
