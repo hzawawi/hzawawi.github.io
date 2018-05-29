@@ -46,7 +46,8 @@ Future blogs will be giving more deep guidelines about amazon dynamodb api and d
  	}
 }
 ```
-In order to create the client we need to pass to `AmazonDynamoDBClient` constructor the accessId and accessKey
+
+In order to create the client we need to pass to **AmazonDynamoDBClient** constructor the accessId and accessKey
 and sessionToken in case you have MFA enabled for your account. For the sake of simplicity we are pointing to localstack mock dynamo mock service.
 
 
@@ -91,8 +92,8 @@ public class Student : IEquatable<Student>
 }
 ```
 In this example model, we are using two attributes:
-- `DynamoDBTable` to map the dynamodb equivalent table
-- `DynamoDBHashKey` to map the table hashkey
+- ***DynamoDBTable*** to map the dynamodb equivalent table
+- ***DynamoDBHashKey*** to map the table hashkey
 
 ```
 public async Task<CreateTableResponse> SetupAsync()
