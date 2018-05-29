@@ -20,6 +20,8 @@ Future blogs will give deeper guidelines about Amazon DynamoDB API and its core 
   Localstack is really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
 ### Code Sample
+In this example, we are creating a student table in DynamoDB, we will insert a new record and retrieve it back using the hashKey or by scanning the table looking for a matching name.
+
 #### 1. DynamoDb client setup
  ```
  public class DynamoClient
