@@ -10,7 +10,6 @@ When started working with dynamodb database, I found the online documentation an
 Goal of this first blog, is to give a simple example to quickly setup dynamodb client and be able to do some basic operations with the dynamoDb.
 Future blogs will be giving more deep guidelines about amazon dynamodb api and dynamodb core features.
 
-
 ### Dependencies
 
 - #### AWSSDK.DynamoDBv2 package:
@@ -204,3 +203,6 @@ public async Task SaveOnlyStudent(Student student)
 In order to prevent overriding the details of existing records, we need to leverage conditional expressions in dynamoDb.
 So if we try to insert a record with a hashKey already presents in the table we will get *ConditionalCheckFailedException* being thrown
 
+### Reference
+You can find the above code snippets on [github](https://github.com/hzawawi/DynamoDbSamples)
+ 
