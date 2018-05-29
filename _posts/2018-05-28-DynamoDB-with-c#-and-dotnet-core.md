@@ -1,24 +1,23 @@
 ---
 layout: page
-title: DynamoDB with c# and .Net Core.
+title: DynamoDB with C# and .NET Core.
 permalink: /dynamodb-post-1/
 ---
 
 ### Objective
-When started working with dynamodb database, I found the online documentation and online code samples were quite limited and bit confusing. So I decided to start writing few blogs around the things I learned along the way so it provides some helps for future developers.
+When I first started working with DynamoDB database, I found the online documentation and code samples were quite limited and a bit confusing. This is why I decided to start writing few blogs around the things I learned along the way, to share knowledge and assist interested developers.
 
-Goal of this first blog, is to give a simple example to quickly setup dynamodb client and be able to do some basic operations with the dynamoDb.
-Future blogs will be giving more deep guidelines about amazon dynamodb api and dynamodb core features.
+The goal of this first blog, is to give a simple example of how to quickly setup DynamoDB client, and how to do some basic operations with the DynamoDB.
+Future blogs will give deeper guidelines about Amazon DynamoDB API and its core features.
 
 ### Dependencies
 
 - #### AWSSDK.DynamoDBv2 package:
-  .Net API to facilitate the interaction with aws dynamodb in order to execute different operations against the database
-  such as (createTable, saveItem, retrieveItem,etc..)
+  this is a .NET API that facilitates the interaction with AWS DynamoDB in order to execute different operations against the database such as (createTable, saveItem, retrieveItem,etc..)
 
 - #### [Localstack](https://github.com/localstack/localstack): 
-  framework that helps mocking different aws cloud applications, in our example we are going to rely on it to mock amazon dynamodb database.
-  localstack really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
+  Localstack is a framework that helps mock different AWS cloud applications; In our example below, we are going to rely on it to mock the Amazon DynamoDB database.
+  Localstack is really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
   
 ### Code Sample
 #### 1. DynamoDb client setup
