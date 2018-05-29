@@ -50,75 +50,128 @@ In order to create the client we need to pass to `AmazonDynamoDBClient` construc
 and sessionToken in case you have MFA enabled for your account. For the sake of simplicity we are pointing to localstack mock dynamo mock service.
 
 
-2. #### Create table
+2. #### Table and equivalent model class
 
 ```
-[DynamoDBTable("person")]
-public class Person: IEquatable<Person>
+[DynamoDBTable("student")]
+public class Student : IEquatable<Student>
 {
-    [DynamoDBHashKey]
-    public int Id { get; set; }
+     [DynamoDBHashKey] 
+     public int Id { get; set; }
+     
+     public string FirstName { get; set; }
 
-    public string FirstName { get; set; }
-    
-    public string LastName { get; set; }
+     public string LastName { get; set; }
 
-    public bool Equals(Person other)
+     public bool Equals(Student other)
+     {
+         if (ReferenceEquals(null, other)) return false;
+         if (ReferenceEquals(this, other)) return true;
+         return Id == other.Id && string.Equals(FirstName, other.FirstName) && string.Equals(LastName, other.LastName);
+     }
+
+     public override bool Equals(object obj)
+     {
+         if (ReferenceEquals(null, obj)) return false;
+         if (ReferenceEquals(this, obj)) return true;
+         if (obj.GetType() != this.GetType()) return false;
+         return Equals((Student) obj);
+     }
+
+     public override int GetHashCode()
+     {
+         unchecked
+         {
+             var hashCode = Id;
+             hashCode = (hashCode * 397) ^ (FirstName != null ? FirstName.GetHashCode() : 0);
+             hashCode = (hashCode * 397) ^ (LastName != null ? LastName.GetHashCode() : 0);
+             return hashCode;
+         }
+     }
+}
+```
+In this example model, we are using two attributes:
+- `DynamoDBTable` to map the dynamodb equivalent table
+- `DynamoDBHashKey` to map the table hashkey
+
+```
+public async Task<CreateTableResponse> SetupAsync()
+{
+    var createTableRequest = new CreateTableRequest
     {
-        if (ReferenceEquals(null, other)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return Id == other.Id && string.Equals(FirstName, other.FirstName) && string.Equals(LastName, other.LastName);
-    }
-
-    public override int GetHashCode()
-    {
-        unchecked
+        TableName = "test_student",
+        AttributeDefinitions = new List<AttributeDefinition>(),
+        KeySchema = new List<KeySchemaElement>(),
+        GlobalSecondaryIndexes = new List<GlobalSecondaryIndex>(),
+        LocalSecondaryIndexes = new List<LocalSecondaryIndex>(),
+        ProvisionedThroughput = new ProvisionedThroughput
         {
-            var hashCode = Id;
-            hashCode = (hashCode * 397) ^ (FirstName != null ? FirstName.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ (LastName != null ? LastName.GetHashCode() : 0);
-            return hashCode;
+            ReadCapacityUnits = 1,
+            WriteCapacityUnits = 1
         }
-    }
+    };
+    createTableRequest.KeySchema = new[]
+    {
+        new KeySchemaElement
+        {
+            AttributeName = "Id",
+            KeyType = KeyType.HASH,
+        },
+
+    }.ToList();
+
+    createTableRequest.AttributeDefinitions = new[]
+    {
+        new AttributeDefinition
+        {
+            AttributeName = "Id",
+            AttributeType = ScalarAttributeType.N,
+        }
+    }.ToList();
+
+    return await _amazonDynamoDBClient.CreateTableAsync(createTableRequest);
 }
 ```
 
-3. #### tests
+In this snippet, we are building the creation table request to construct the table, we have to specify all defined keys on the table. This seems bit of ceramony to do if you have quite few tables, we will show in the next blogs some solutions to make it easier to create tables associated to the models in a easier/faster maner for rapid developement.
+For the sake of simplicity we are just going to stick with the raw api calls in this blog.
+
+
+3. #### Save/Query from the table
 
 ```
-public class DynamoClientTests
+public async Task SaveOrUpdateStudent(Student student)
 {
-    private readonly DynamoClient _dynamoDbClient;
+    await _context.SaveAsync(student);
+}
 
-    public DynamoClientTests()
-    {
-        _dynamoDbClient = new DynamoClient();
-        try
+public async Task<Student> GetStudentUsingHashKey(int id)
+{
+    return await _context.LoadAsync<Student>(id);
+}
+
+public async Task<Student> ScanForStudentUsingFirstName(string firstName)
+{
+    var search = _context.ScanAsync<Student>
+    (
+        new[]
         {
-            _dynamoDbClient.SetupAsync().Wait();
+            new ScanCondition
+            (
+                nameof(Student.FirstName),
+                ScanOperator.Equal,
+                firstName
+            )
         }
-        catch (AggregateException e)
-        {
-            //ignore table already created
-            Console.WriteLine(e);
-        }
-    }
-    
-    [Fact]
-    public void SaveAPersonAndRetrieveItBack()
-    {
-        var person = new Person
-        {
-            Id = 1,
-            FirstName = "sam",
-            LastName = "griffen"
-        };
-
-        _dynamoDbClient.SavePerson(person).Wait();
-
-        var returnedPerson = _dynamoDbClient.GetPerson(person.Id).Result;
-
-        Assert.Equal(returnedPerson, person);
-    }
+    );
+    var result = await search.GetRemainingAsync();
+    return result.FirstOrDefault();
 }
 ```
+
+- SaveOrUpdateStudent: saving a new entity is quite straight forward, all you want to do is to call `SaveAsync`, bare in mind Save will create/update the record, so in case the record already exists the method invocation will just override the data on the matched record
+- GetStudentUsingHashKey: will retrieve the record back using our hashKey
+- ScanForStudentUsingFirstName: will scan the whole table looking for a matching firstName
+
+
+
