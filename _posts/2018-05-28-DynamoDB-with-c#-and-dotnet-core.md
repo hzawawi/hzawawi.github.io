@@ -5,7 +5,7 @@ permalink: /dynamodb-post-1/
 ---
 
 ### Objective
-When I first started working with DynamoDB database, I found the online documentation and code samples were quite limited and a bit confusing. This is why I decided to start writing few blogs around the things I learned along the way, to share knowledge and assist interested developers.
+When I first started working with DynamoDB database, I found the online documentation and code samples were quite limited and a bit confusing. This is why I decided to start writing few blogs about the things I learned along the way, to share knowledge and assist interested developers.
 
 The goal of this first blog, is to give a simple example of how to quickly setup DynamoDB client, and how to do some basic operations with the DynamoDB.
 Future blogs will give deeper guidelines about Amazon DynamoDB API and its core features.
