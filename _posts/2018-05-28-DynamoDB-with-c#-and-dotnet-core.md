@@ -45,9 +45,9 @@ Future blogs will give deeper guidelines about Amazon DynamoDB API and its core 
 }
 ```
 
-In order to create the client we need to pass to **AmazonDynamoDBClient** constructor the accessId and accessKey
-and sessionToken in case you have MFA enabled for your account. For the sake of simplicity we are pointing to localstack mock dynamo mock service.
-
+In order to create the client, we need to pass the accessId and accessKey to the **AmazonDynamoDBClient** constructor.
+If you have MFA enabled on your AWS account, you will need to pass in the seessionToken.
+For the sake of simplicity, we are pointing to localstack's mock DynamoDB service.
 
 #### 2. Setup table and equivalent model class
 
@@ -90,7 +90,7 @@ public class Student : IEquatable<Student>
 }
 ```
 In this example model, we are using two attributes:
-- ***DynamoDBTable*** to map the dynamodb equivalent table
+- ***DynamoDBTable*** to map the DynamoDB equivalent table
 - ***DynamoDBHashKey*** to map the table hashkey
 
 ```
@@ -132,9 +132,8 @@ public async Task<CreateTableResponse> SetupAsync()
 }
 ```
 
-In this snippet, we are building the creation table request to construct the table, we have to specify all defined keys on the table. This seems bit of ceramony to do if you have quite few tables, we will show in the next blogs some solutions to make it easier to create tables associated to the models in a easier/faster maner for rapid developement.
-For the sake of simplicity we are just going to stick with the raw api calls in this blog.
-
+In this snippet, we are building the create table request to construct the table. To do this; we have to specify all defined keys on the table. This seems like a bit of ceremony to do if you have quite few tables, in future I will demonstrate some solutions to do this in an easier and faster maner.
+For the sake of simplicity we are just going to stick with the raw API calls in this blog.
 
 #### 3. Save/Query from the table
 
@@ -167,7 +166,7 @@ public async Task<Student> ScanForStudentUsingFirstName(string firstName)
     return result.FirstOrDefault();
 }
 ```
-- SaveOrUpdateStudent: saving a new entity is quite straight forward, all you want to do is to call `SaveAsync`, bare in mind Save will create/update the record, so in case the record already exists the method invocation will just override the data on the matched record
+- SaveOrUpdateStudent: saving a new entity is quite straight forward, all you need to do is to call `SaveAsync`, Bear in mind, `SaveAsync` will create/update the record; if the record already exists, the method invocation will just override the data on the matched record.
 - GetStudentUsingHashKey: will retrieve the record back using our hashKey
 - ScanForStudentUsingFirstName: will scan the whole table looking for a matching firstName
 
@@ -199,8 +198,8 @@ public async Task SaveOnlyStudent(Student student)
     });
 }
 ```
-In order to prevent overriding the details of existing records, we need to leverage conditional expressions in dynamoDb.
-So if we try to insert a record with a hashKey already presents in the table we will get *ConditionalCheckFailedException* being thrown
+In order to prevent overriding existing records, we need to leverage conditional expressions in DynamoDB.
+So if we try to insert a record with a hashKey already present in the table, we will get a *ConditionalCheckFailedException* being thrown.
 
 ### Reference
 You can find the above code snippets on [github](https://github.com/hzawawi/DynamoDbSamples)
