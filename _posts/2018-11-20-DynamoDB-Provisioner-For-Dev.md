@@ -30,13 +30,14 @@ This article will talk about an approach we adopted in Pushpay to work with Dyna
 To tackle this multi-dimensional problem in Pushpay, we built it something we call DynamoDb provisioner.
 
 The library is build on top of Localstack that will act as the AWS cloud environment. Localstack will help to cut any expense 
-during development cycle, and to worry about any in table provisioning  early on when they are still in very variable state.
+during development cycle, and the need to worry about any table provisioning early on when the schema are still in a very variable state of the project.
 
 The solution is easy to setup for any given project and get value out of it straight away. You can hook hook it up by registering 
 a new middleware or on the initialization of your tests, I will show some examples later one.
 
-The provisioner will take responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` .  It will also map these classes appropriately to the right dynamo table schema by leveraging the AWS API.
-The developer don't have to worry about doing any explicit API calls and can focus on getting the table schema right for his/her particular case.
+The provisioner will take responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` that need provisioning. It will also map these classes appropriately to the right dynamo table schema by leveraging the AWS API.
+The developer don't have to worry about doing any explicit API calls and can focus on getting the table schema right for his/her particular case. Also the provisioner make any destructive change on the table easy to achieve and don't require much of 
+ceremony
 
 ### Table naming strategy
 
