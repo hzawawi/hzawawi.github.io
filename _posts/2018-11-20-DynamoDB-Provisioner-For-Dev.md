@@ -20,24 +20,23 @@ This article will talk about an approach we adopted in Pushpay to work with Dyna
   this is a .NET API that facilitates the interaction with AWS DynamoDB in order to execute different operations against the database such as (createTable, saveItem, retrieveItem,etc..)
 
 - #### [Localstack](https://github.com/localstack/localstack): 
-  Localstack is a framework that helps mock different AWS cloud applications; In our example below, we are going to rely on it to mock the Amazon DynamoDB database.
-  Localstack is really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
+  Localstack is a framework that helps mock different AWS cloud applications. In our example below, we are going to rely on it to mock the Amazon DynamoDB database.
+  Localstack is really helpful to use for local offline development. It is also reduce dependencies/cost on the cloud infrastructure. 
+
 
 
 ### Solution:
 
 To tackle this multi-dimensional problem in Pushpay, we built it something we call DynamoDb provisioner.
 
-The library is build on top of Localstack that will act as the AWS cloud environment, so you don't have to spend any money 
-during dev cycle and you dont need to worry about provisioning tables infrastructure early on when they are still in very variable state.
+The library is build on top of Localstack that will act as the AWS cloud environment. Localstack will help to cut any expense 
+during development cycle, and to worry about any in table provisioning  early on when they are still in very variable state.
 
 The solution is easy to setup for any given project and get value out of it straight away. You can hook hook it up by registering 
 a new middleware or on the initialization of your tests, I will show some examples later one.
 
-The provisioner will take all responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` and map them correctly to the right dynamo table schema leveraging the AWS API.
-You can also choose to persist the tables/data between different runs or demolish it on each run which; is the favorable behavior when it comes to unit tests.
+The provisioner will take responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` .  It will also map these classes appropriately to the right dynamo table schema by leveraging the AWS API.
 The developer don't have to worry about doing any explicit API calls and can focus on getting the table schema right for his/her particular case.
-
 
 ### Table naming strategy
 
@@ -45,7 +44,7 @@ The developer don't have to worry about doing any explicit API calls and can foc
 dev-table, qa-table
 
 
--Random: a generated guid that prefix the original table name, this will enable us to allow parallel executions of different tests
+- Random: a generated guid that prefix the original table name, this will enable us to allow parallel executions of different tests
 without having table collisions
 
 
