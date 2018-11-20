@@ -72,11 +72,12 @@ and make the setup of a new table as easy as possible
 ### Setup snippets
 
 
- #### Service Middleware
+#### Service Middleware
+
 
  ```
 public class CreateTablesMiddleware
-    {
+{
         readonly DynamoProvisioner _provisioner;
         readonly RequestDelegate _next;
 
@@ -97,54 +98,52 @@ public class CreateTablesMiddleware
 
   ```
 
-
 #### IntegrationFixture
 
 
 ```
 
 public class IntegrationFixture : IAsyncLifetime
+{
+    const int DynamoPort = 4569;
+
+    public IntegrationFixture()
     {
-        const int DynamoPort = 4569;
+        var containerBuilder = new ContainerBuilder();
 
-        public IntegrationFixture()
+        var config = new AwsInitializationConfiguration
         {
-            var containerBuilder = new ContainerBuilder();
+            DynamoModelAssemblies = new[] {typeof(DynamoProvisioner).Assembly},
+            DynamoTableNamingStrategy = TableNamingStrategy.Random,
+            UseLocalStack = c => true,
+        };
+        DynamoConfigurationUtils.RegisterDynamoDb(containerBuilder, config.DynamoTablePrefix, config.UseLocalStack,
+            c => BuildServiceUrl(c, config.LocalStackHost, DynamoPort), config.DynamoTableNamingStrategy, config.DynamoModelAssemblies);
+        
+        Container = containerBuilder.Build();
 
-            var config = new AwsInitializationConfiguration
-            {
-                DynamoModelAssemblies = new[] {typeof(DynamoProvisioner).Assembly},
-                DynamoTableNamingStrategy = TableNamingStrategy.Random,
-                UseLocalStack = c => true,
-            };
-            DynamoConfigurationUtils.RegisterDynamoDb(containerBuilder, config.DynamoTablePrefix, config.UseLocalStack,
-                c => BuildServiceUrl(c, config.LocalStackHost, DynamoPort), config.DynamoTableNamingStrategy, config.DynamoModelAssemblies);
-            
-            Container = containerBuilder.Build();
-
-        }
-
-        public IContainer Container { get; }
-
-        public IDynamoDBContext DynamoDbContext => Container.Resolve<IDynamoDBContext>();
-
-        public static string BuildServiceUrl(IComponentContext c, Func<IComponentContext, string> localstackHost, int port)
-        {
-            string host = localstackHost == null ? "localhost" : localstackHost(c) ?? "localhost";
-            return "http://" + host + ":" + port;
-        }
-
-        public Task InitializeAsync()
-        {
-            return Container.Resolve<DynamoProvisioner>().Setup(performFirstTimeTestTableCleanup: true);
-        }
-
-        public Task DisposeAsync()
-        {
-            return Container.Resolve<DynamoProvisioner>().Cleanup();
-        }
     }
 
+    public IContainer Container { get; }
+
+    public IDynamoDBContext DynamoDbContext => Container.Resolve<IDynamoDBContext>();
+
+    public static string BuildServiceUrl(IComponentContext c, Func<IComponentContext, string> localstackHost, int port)
+    {
+        string host = localstackHost == null ? "localhost" : localstackHost(c) ?? "localhost";
+        return "http://" + host + ":" + port;
+    }
+
+    public Task InitializeAsync()
+    {
+        return Container.Resolve<DynamoProvisioner>().Setup(performFirstTimeTestTableCleanup: true);
+    }
+
+    public Task DisposeAsync()
+    {
+        return Container.Resolve<DynamoProvisioner>().Cleanup();
+    }
+}
 
 ```
 
