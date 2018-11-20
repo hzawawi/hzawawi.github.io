@@ -13,6 +13,16 @@ It gets bit challenging when working with dynamodb to make your development stor
 - How should I implement integration tests?
 
 
+### Dependencies
+
+- #### AWSSDK.DynamoDBv2 package:
+  this is a .NET API that facilitates the interaction with AWS DynamoDB in order to execute different operations against the database such as (createTable, saveItem, retrieveItem,etc..)
+
+- #### [Localstack](https://github.com/localstack/localstack): 
+  Localstack is a framework that helps mock different AWS cloud applications; In our example below, we are going to rely on it to mock the Amazon DynamoDB database.
+  Localstack is really helpful to use when you want to develop a cloud application offline and reduce dependencies on the cloud infrastructure. 
+
+
 ### Solution:
 
 To tackle this multi-dimensional problem in Pushpay, we built it something we call dynamodb provisioner.
@@ -55,23 +65,23 @@ and make the setup of a new table as easy as possible
 
  ```
 public class CreateTablesMiddleware
-	{
-		readonly DynamoProvisioner _provisioner;
-		readonly RequestDelegate _next;
+    {
+        readonly DynamoProvisioner _provisioner;
+        readonly RequestDelegate _next;
 
-		public CreateTablesMiddleware(DynamoProvisioner provisioner, RequestDelegate next)
-		{
-			_provisioner = provisioner;
-			_next = next;
-		}
+        public CreateTablesMiddleware(DynamoProvisioner provisioner, RequestDelegate next)
+        {
+            _provisioner = provisioner;
+            _next = next;
+        }
 
-		public async Task Invoke(HttpContext context)
-		{
-			await _provisioner.Setup();
+        public async Task Invoke(HttpContext context)
+        {
+            await _provisioner.Setup();
 
-			await _next(context).ConfigureAwait(false);
-		}
-	}
+            await _next(context).ConfigureAwait(false);
+        }
+    }
 }
 
   ```
