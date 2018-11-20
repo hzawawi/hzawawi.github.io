@@ -6,7 +6,8 @@ permalink: /dynamodb-post-2/
 
 ### Challenges:
 
-It gets bit challenging when working with dynamodb to make your development story quite smooth and easy to on-board new contributors to use your solution in a fast manner.
+It gets a bit challenging when working with DynamoDb to make your development story quite smooth and easy to on-board new contributors to use your project in a faster manner.
+This article will talk about an approach we adopted in Pushpay to work with DynamoDb to get over all the below complexities:
 - How to not depend on AWS and the must to provision tables there yet?
 - How to get rid of all boiler plate code around creating tables?
 - How to cleanup tables and do any table alternation needed?
@@ -25,16 +26,17 @@ It gets bit challenging when working with dynamodb to make your development stor
 
 ### Solution:
 
-To tackle this multi-dimensional problem in Pushpay, we built it something we call dynamodb provisioner.
+To tackle this multi-dimensional problem in Pushpay, we built it something we call DynamoDb provisioner.
 
-The library is build on top of localstack that will act as the AWS cloud environment, so you dont have to spend any money 
-during dev cycle and you dont need to worry about provisioning the table infrastructure early on when it is still in very variable state.
-
+The library is build on top of Localstack that will act as the AWS cloud environment, so you don't have to spend any money 
+during dev cycle and you dont need to worry about provisioning tables infrastructure early on when they are still in very variable state.
 
 The solution is easy to setup for any given project and get value out of it straight away. You can hook hook it up by registering 
-a new middleware or on the init of your tests, I will show some examples later one.
-The provisioner will take all responsibility to find all the tables attributed by `DynamoDBTable` and map them correctly to the right dynamo table schema leveraging the AWS API.
-You can also choose to persist the data between different runs or demolished on each run which is the favourable behaviour when it comes to unit tests.
+a new middleware or on the initialization of your tests, I will show some examples later one.
+
+The provisioner will take all responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` and map them correctly to the right dynamo table schema leveraging the AWS API.
+You can also choose to persist the tables/data between different runs or demolish it on each run which; is the favorable behavior when it comes to unit tests.
+The developer don't have to worry about doing any explicit API calls and can focus on getting the table schema right for his/her particular case.
 
 
 ### Table naming strategy
@@ -43,8 +45,17 @@ You can also choose to persist the data between different runs or demolished on 
 dev-table, qa-table
 
 
--Random: a generated guid that prefix the orginal table name, this will enable us to allow parrallel executiong of different tests
+-Random: a generated guid that prefix the original table name, this will enable us to allow parallel executions of different tests
 without having table collisions
+
+
+### Data management
+
+For your service or website consuming the provisioner, the tables and data get persisted across different runs.
+If you would like to clear tables/data up, you can restart your localstack docker container or deleted any mapped data from localstack container.
+
+For the tests, most of the implementation was driven based on the assumption that data/tables are not a persistent items during 
+the test lifecycle which works well
 
 
 ### Custom attributes:
