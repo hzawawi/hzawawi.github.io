@@ -6,8 +6,8 @@ permalink: /dynamodb-post-2/
 
 ### Challenges:
 
-It gets a bit challenging when working with DynamoDb to make your development story quite smooth and easy to on-board new contributors to use your project in a faster manner.
-This article will talk about an approach we adopted in Pushpay to work with DynamoDb to get over all the below complexities:
+The development story get quite challenging when working with DynamoDb for different reasons. 
+This article will talk about an approach we adopted in Pushpay to work with DynamoDb to overcomes some of the below complexities:
 - How to not depend on AWS and the must to provision tables there yet?
 - How to get rid of all boiler plate code around creating tables?
 - How to cleanup tables and do any table alternation needed?
