@@ -8,7 +8,7 @@ permalink: /dynamodb-post-2/
 
 The development story get quite challenging when working with DynamoDb for different reasons. 
 This article will talk about an approach we adopted in Pushpay to work with DynamoDb to overcomes some of the below complexities:
-- How to not depend on AWS and the must to provision tables there yet?
+- How to not depend on AWS and the must to provision tables there early on?
 - How to get rid of all boiler plate code around creating tables?
 - How to cleanup tables and do any table alternation needed?
 - How should I implement integration tests?
