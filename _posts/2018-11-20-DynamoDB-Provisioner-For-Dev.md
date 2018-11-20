@@ -35,9 +35,12 @@ during development cycle, and the need to worry about any table provisioning ear
 The solution is easy to setup for any given project and get value out of it straight away. You can hook hook it up by registering 
 a new middleware or on the initialization of your tests, I will show some examples later one.
 
-The provisioner will take responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` that need provisioning. It will also map these classes appropriately to the right dynamo table schema by leveraging the AWS API.
-The developer don't have to worry about doing any explicit API calls and can focus on getting the table schema right for his/her particular case. Also the provisioner make any destructive change on the table easy to achieve and don't require much of 
-ceremony
+The provisioner will take responsibility to find all the classes of your solution assemblies attributed by `DynamoDBTable` that need provisioning. 
+It will also map these classes appropriately to the right dynamo table schema by leveraging the AWS API.
+The developer don't have to worry about doing any explicit API calls and can focus on getting the table schema right for his/her particular case.
+
+Also the provisioner makes any destructive changes on tables easier to achieve and don't require much of ceremony. 
+This is becomes very crucial in development when we expect quite more changes to happen.
 
 ### Table naming strategy
 
