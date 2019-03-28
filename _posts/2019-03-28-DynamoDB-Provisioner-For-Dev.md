@@ -42,7 +42,6 @@ public class TableWithStringHashKeyAndNumberRangeKey
   [DynamoDBRangeKey]
   public int Timestamp { get; set; }
 }
-}
 ```
 
 ```
