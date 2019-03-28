@@ -16,19 +16,19 @@ _DynamoDbProvisioner_ will be responsible for initializing  all the defined tabl
 
 ### How Does DynamoDbProvisioner work?
 
-The provisioner is registered against a set of assemblies, on runtime the provisioner will go through all types in the assemblies and look for any class decorated by `DynamoDBTableAttribute`. Knowing that, it will be enough to register the provisioner against the main assembly and you don’t have to worry about adding any configuration for any new table added.
+The provisioner is registered against a set of assemblies, on runtime the provisioner will go through all types in the assemblies and look for any class decorated by _DynamoDBTableAttribute_. Knowing that, it will be enough to register the provisioner against the main assembly and you don’t have to worry about adding any configuration for any new table added.
 
 The provisioner relies on having a class representing the DynamoDb table decorated by some attributes that will feed the dynamodb APIthe information needed to create this table.
 
 Some of these attributes are the following :
-_DynamoDBTableAttribute_ this will map to the table name
-_DynamoDBHashKeyAttribute_ this will specify which of the following model properties will represent the hashkey of the table
-_DynamoDBRangeKeyAttribute_ this will specify which of the following model properties will represent the rangeKey of the table
-_DynamoDBGlobalSecondaryIndexHashKeyAttribute_ this will specify which of the following model properties will represent the hashKey of the global secondary index
-_DynamoDBGlobalSecondaryIndexRangeKeyAttribute_this will specify which of the following model properties will represent the rangeKey of the global secondary index
-_DynamoDBLocalSecondaryIndexRangeKeyAttribute_
+- _DynamoDBTableAttribute_ this will map to the table name
+- _DynamoDBHashKeyAttribute_ this will specify which of the following model properties will represent the hashkey of the table
+- _DynamoDBRangeKeyAttribute_ this will specify which of the following model properties will represent the rangeKey of the table
+- _DynamoDBGlobalSecondaryIndexHashKeyAttribute_ this will specify which of the following model properties will represent the hashKey of the global secondary index
+- _DynamoDBGlobalSecondaryIndexRangeKeyAttribute_this will specify which of the following model properties will represent the rangeKey of the global secondary index
+- _DynamoDBLocalSecondaryIndexRangeKeyAttribute_
 this will specify which of the following model properties will represent the rangeKey of the local secondary index
-_DynamoDBTimeToLiveAttribute_ this will specify which of the following model properties will store  
+- _DynamoDBTimeToLiveAttribute_ this will specify which of the following model properties will store  
 to store the expiration time for items
 
 ### Example of a DynamoDb table
