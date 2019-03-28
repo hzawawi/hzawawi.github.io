@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Make DynamoDB easy for dev
+title: Make DynamoDB easier for dev
 permalink: /dynamodb-post-2/
 ---
 
