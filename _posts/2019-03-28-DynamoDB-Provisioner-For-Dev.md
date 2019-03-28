@@ -25,7 +25,7 @@ Some of these attributes are the following :
 - _DynamoDBHashKeyAttribute_ this will specify which of the following model properties will represent the hashkey of the table
 - _DynamoDBRangeKeyAttribute_ this will specify which of the following model properties will represent the rangeKey of the table
 - _DynamoDBGlobalSecondaryIndexHashKeyAttribute_ this will specify which of the following model properties will represent the hashKey of the global secondary index
-- _DynamoDBGlobalSecondaryIndexRangeKeyAttribute_this will specify which of the following model properties will represent the rangeKey of the global secondary index
+- _DynamoDBGlobalSecondaryIndexRangeKeyAttribute_ this will specify which of the following model properties will represent the rangeKey of the global secondary index
 - _DynamoDBLocalSecondaryIndexRangeKeyAttribute_
 this will specify which of the following model properties will represent the rangeKey of the local secondary index
 - _DynamoDBTimeToLiveAttribute_ this will specify which of the following model properties will store  
