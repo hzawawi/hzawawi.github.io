@@ -77,5 +77,5 @@ In addition to the provisioner, I recommend the use of one of the applications l
 You can download and reference the nuget package from [Pushpay.DynamoDbProvisioner](https://www.nuget.org/packages?q=Pushpay.DynamoDbProvisioner)
 
 ### Source code 
-You can find the above code snippets on [github](https://github.com/hzawawi/DynamoProvisioner)
+You can find the above code snippets on [github](https://github.com/pushpay-labs/dynamodb-provisioner)
 
